@@ -26,12 +26,14 @@ gui.elements = {
     loot_modes = combo_box:new(0, get_hash("bosser_loot_modes")),
     ga_slider = slider_int:new(1, 4, 1, get_hash(plugin_label .. "_ga_slider")),
     uber_ga_slider = slider_int:new(1, 4, 1, get_hash(plugin_label .. "_uber_ga_slider")),
+    -- Initialize the slider with a safe float range
+    chest_wait_time = slider_float:new(0.0, 20.0, 5.0, get_hash(plugin_label .. "_chest_wait")),
     use_alfred = create_checkbox(false, "use_alfred"),
     enable_ground_items_teleport = create_checkbox(true, "enable_ground_items_teleport")
 }
 
 function gui.render()
-    if not gui.elements.main_tree:push(plugin_label) then return end
+    if not gui.elements.main_tree:push(plugin_label .. ' 1.0.1') then return end
 
     gui.elements.main_toggle:render("Enable", "Enable the bot")
 
@@ -39,6 +41,10 @@ function gui.render()
         gui.elements.loot_modes:render("Loot Modes", gui.loot_modes_options, "Nothing and Stash will get you stuck for now")
         gui.elements.ga_slider:render("Min Unique GA Counter", "Select minimum Greater Affix to keep?")
         gui.elements.uber_ga_slider:render("Min Uber GA Counter", "Select minimum Greater Affix to keep")
+        
+        -- FIXED: Added '1' as the 3rd argument to specify decimal precision and satisfy stack index 4
+        gui.elements.chest_wait_time:render("Post-Chest Delay", "Seconds to wait after opening a chest before Altar reactivation", 1)
+        
         gui.elements.enable_ground_items_teleport:render("Enable Ground Items Teleport", "Enable teleporting to town when too many items are on ground")
         
         if PLUGIN_alfred_the_butler then
